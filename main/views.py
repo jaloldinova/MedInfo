@@ -3,16 +3,9 @@ from .models import Drug
 
 def search_drug(request):
     query = request.GET.get('q')
-    drug = None
-
-    if query:
-        try:
-            drug = Drug.objects.get(name__icontains=query)
-        except Drug.DoesNotExist:
-            drug = None
+    drugs = Drug.objects.filter(name__icontains=query) if query else []
 
     return render(request, 'search.html', {
-        'drug': drug,
+        'drugs': drugs,
         'query': query
     })
-
